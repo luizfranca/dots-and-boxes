@@ -24,32 +24,32 @@ class Board:
 				self.board[-1].append(Box())
 
 
-		upperVertexes = []
+		upperEdges = []
 		for j in range(m - 1):
 			# print (j, j + 1)
-			upperVertexes.append(Vertex((0, j), (0, j + 1)))
+			upperEdges.append(Edge((0, j), (0, j + 1)))
 
 		for i in range(n -1):
-			lowerVertexes = []
+			lowerEdges = []
 			for j in range(m - 1):
-				lowerVertexes.append(Vertex((i + 1, j), (i + 1, j + 1)))
+				lowerEdges.append(Edge((i + 1, j), (i + 1, j + 1)))
 
 
-			horizontalVertexes = []
+			horizontalEdges = []
 			## Horizontal Vertexes
 			for j in range(m):
-				horizontalVertexes.append(Vertex((i, j), (i + 1, j)))
+				horizontalEdges.append(Edge((i, j), (i + 1, j)))
 
 
 			## Fill Boxes
 			for j in range(m - 1):
-				self.board[i][j].vertexes = [upperVertexes[j], 
-				horizontalVertexes[j], horizontalVertexes[j + 1], 
-				lowerVertexes[j]]
+				self.board[i][j].edges = [upperEdges[j], 
+				horizontalEdges[j], horizontalEdges[j + 1], 
+				lowerEdges[j]]
 
 
 			## End
-			upperVertexes = lowerVertexes
+			upperEdges = lowerEdges
 
 
 
@@ -63,13 +63,13 @@ class Board:
 class Box:
 	
 	def __init__(self):
-		self.vertexes = [] # UP LEFT RIGHT DOWN
+		self.edges = [] # UP LEFT RIGHT DOWN
 
-class Vertex:
+class Edge:
 	
-	def __init__(self, edge1 = (), edge2 = ()):
-		self.edge1 = edge1
-		self.edge2 = edge2
+	def __init__(self, vertex1 = (), vertex2 = ()):
+		self.vertex1 = vertex1
+		self.vertex2 = vertex2
 
 ## Functions
 		
@@ -92,7 +92,7 @@ if __name__ == "__main__":
 
 
 	print "\n\n"
-	print b.board[0][0].vertexes[2].edge1
-	print b.board[0][1].vertexes[1].edge1
-	b.board[0][0].vertexes[2].edge1 = "a"
-	print b.board[0][1].vertexes[1].edge1
+	print b.board[0][0].edges[2].vertex1
+	print b.board[0][1].edges[1].vertex1
+	b.board[0][0].edges[2].vertex1 = "a"
+	print b.board[0][1].edges[1].vertex1
