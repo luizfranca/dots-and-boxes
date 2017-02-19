@@ -27,7 +27,6 @@ class Board(Frame):
                 # create dots
                 canvas.create_oval(10 + j * 45, 10 + i * 45, 20 + j * 45, 20 + i * 45, fill='blue')
 
-        flag = False
         isHorizontal = True
         i = 0
         for line in table:
@@ -47,7 +46,7 @@ class Board(Frame):
                     canvas.create_rectangle(20 + (j - 1) * 45, 20 + i * 45, 55 + (j - 1) * 45, 55 + i * 45, fill=color)
 
             isHorizontal = not isHorizontal
-            if (line.find("B") != -1 or line.find("W") != -1 or line.find("*") != -1):
+            if ("B" in line or "W" in line or "*" in line):
                 i += 1
 
     def initUIFilled(self, n, m, canvas):
