@@ -72,7 +72,7 @@ class Board:
 
 	def toString(self):
 		boardString = ""
-		
+
 		row3 = ""
 		for row in self.board:
 			row1 = ""
@@ -90,6 +90,35 @@ class Board:
 		boardString = boardString.replace("..", ".").replace("xx", "x")
 		return boardString
 
+	def move(self, x, y, player):
+		if (x % 2 == y % 2):
+			return False
+		# x == row
+		# y == col
+		if (x == 0):
+			row = 0
+			pos = 0
+		elif (x % 2 == 0):
+			col = y / 2
+			pos = 3
+		else:
+			col = y / 2 - 1
+
+		if (y == 0):
+			col = 0
+			pos = 1
+		elif (y % 2 == 0):
+			row = x / 2
+			pos = 2
+		else:
+			row = x / 2 - 1
+
+
+		self.board[row][col].move(pos , player)
+
+		return True
+
+
 class Box:
 	
 	def __init__(self):
@@ -103,6 +132,17 @@ class Box:
 			vertexes += i.listVertexes()
 
 		return vertexes
+
+	def move(self, n, player):
+		self.edges[n].marked = True
+		if (self.__isComplete()):
+			self.player = player
+
+	def __isComplete(self):
+		marked = True
+		for edge in self.edges:
+			marked = marked and edge.marked
+		return marked
 
 	def toString(self):
 		string = "." + ("x" if self.edges[0].marked else "_") + ".|" + \
@@ -149,16 +189,23 @@ if __name__ == "__main__":
 	print "\n\n"
 
 	b.inputBoard(args[1])
+	
+	# print b.toString()
+	# print b.move(1, 1, "B")
+	# print b.move(2, 2, "B")
+	# print b.move(2, 3, "B")
+	# print b.move(1, 4, "W")
+	# print b.toString()
 
-	print b.toString()
-	# print len(b.board)
-	# print b.board[1][0].player
+	# # b.play()
+	# # print len(b.board)
+	# # print b.board[1][0].player
 
-	# print b.board[0][0].toString()
-	# print b.board[0][0].listVertexes()
-	# print (1, 0) in b.board[0][0].listVertexes()
+	# # print b.board[0][0].toString()
+	# # print b.board[0][0].listVertexes()
+	# # print (1, 0) in b.board[0][0].listVertexes()
 
-	# print b.board[0][0].edges[2].vertex1
-	# print b.board[0][1].edges[1].vertex1
-	# b.board[0][0].edges[2].vertex1 = "a"
-	# print b.board[0][1].edges[1].vertex1
+	# # print b.board[0][0].edges[2].vertex1
+	# # print b.board[0][1].edges[1].vertex1
+	# # b.board[0][0].edges[2].vertex1 = "a"
+	# # print b.board[0][1].edges[1].vertex1
