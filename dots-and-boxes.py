@@ -18,8 +18,6 @@ class Board:
 	def __init__(self, n = 0, m = 0):
 		self.board = self.__createBoard(n, m)
 
-		
-
 	def __createBoard(self, n, m):
 		board = []
 		for i in xrange(n -1):
@@ -57,20 +55,40 @@ class Board:
 
 		return board
 
-	def inputBoard(self, stringBoard):
-		m = stringBoard.split("|")[0].count(".")
-		n = stringBoard.count(".") / m
+	def inputBoard(self, boardString):
+		m = boardString.split("|")[0].count(".")
+		n = boardString.count(".") / m
 		
-		stringBoard = stringBoard.upper().replace(".", "").split("|")
+		boardString = boardString.upper().replace(".", "").split("|")
 		self.board = self.__createBoard(n, m)
 		for i in range(len(self.board)):
 			for j in range(len(self.board[i])):
-				self.board[i][j].edges[0].marked = stringBoard[i * 2][j] == "X" 			   # UP
-				self.board[i][j].edges[1].marked = stringBoard[i * 2 + 1][j * 2] == "X"        # LEFT
-				self.board[i][j].edges[2].marked = stringBoard[i * 2 + 1][(j + 1) * 2] == "X"  # RIGHT
-				self.board[i][j].edges[3].marked = stringBoard[(i + 1) * 2][j] == "X"  		   # DOWN
+				self.board[i][j].edges[0].marked = boardString[i * 2][j] == "X" 			   # UP
+				self.board[i][j].edges[1].marked = boardString[i * 2 + 1][j * 2] == "X"        # LEFT
+				self.board[i][j].edges[2].marked = boardString[i * 2 + 1][(j + 1) * 2] == "X"  # RIGHT
+				self.board[i][j].edges[3].marked = boardString[(i + 1) * 2][j] == "X"  		   # DOWN
 
-				self.board[i][j].player = stringBoard[i * 2 + 1][j * 2 + 1].replace("*","")    # Marked
+				self.board[i][j].player = boardString[i * 2 + 1][j * 2 + 1].replace("*","")    # Marked
+
+	def toString(self):
+		boardString = ""
+		
+		row3 = ""
+		for row in self.board:
+			row1 = ""
+			row2 = ""
+			row3 = ""
+			for box in row:
+				boxString = box.toString().split("|")
+				row1 += boxString[0]
+				row2 += boxString[1]
+				row3 += boxString[2]
+
+			boardString += row1 + "|" + row2 + "|"
+			
+		boardString += row3
+		boardString = boardString.replace("..", ".").replace("xx", "x")
+		return boardString
 
 class Box:
 	
@@ -87,7 +105,16 @@ class Box:
 		return vertexes
 
 	def toString(self):
-		return "".join([i.toString() for i in self.edges])
+		string = "." + ("x" if self.edges[0].marked else "_") + ".|" + \
+		("x" if self.edges[1].marked else "_") + \
+		("*" if self.player == "" else self.player) + \
+		("x" if self.edges[2].marked else "_") + "|." + \
+		("x" if self.edges[3].marked else "_") + "."
+
+		return string
+
+	# def toString(self):
+	# 	return "".join([i.toString() for i in self.edges])
 
 class Edge:
 	
@@ -123,6 +150,7 @@ if __name__ == "__main__":
 
 	b.inputBoard(args[1])
 
+	print b.toString()
 	# print len(b.board)
 	# print b.board[1][0].player
 
