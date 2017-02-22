@@ -1,18 +1,3 @@
-import sys
-
-"""
-
-.   .   .   .
-             
-.   .   .   .
-             
-.   .   .   . 
-
-
-"""
-
-## Classes
-
 class Board:
 
 	def __init__(self, n = 0, m = 0):
@@ -28,7 +13,6 @@ class Board:
 
 		upperEdges = []
 		for j in range(m - 1):
-			# print (j, j + 1)
 			upperEdges.append(Edge((0, j), (0, j + 1)))
 
 		for i in range(n -1):
@@ -50,7 +34,6 @@ class Board:
 				lowerEdges[j]]
 
 
-			## End
 			upperEdges = lowerEdges
 
 		return board
@@ -73,11 +56,9 @@ class Board:
 	def toString(self):
 		boardString = ""
 
-		row3 = ""
 		for row in self.board:
-			row1 = ""
-			row2 = ""
-			row3 = ""
+			row1, row2, row3 = "", "", ""
+
 			for box in row:
 				boxString = box.toString().split("|")
 				row1 += boxString[0]
@@ -93,8 +74,7 @@ class Board:
 	def move(self, x, y, player):
 		if (x % 2 == y % 2):
 			return False
-		# x == row
-		# y == col
+
 		if (x == 0):
 			row = 0
 			pos = 0
@@ -113,9 +93,18 @@ class Board:
 		else:
 			row = x / 2 - 1
 
-
 		self.board[row][col].move(pos , player)
 
+		if (row - 1 >= 0 and self.board[row - 1][col].isComplete()):
+			self.board[row - 1][col].player = player
+		if (col - 1 >= 0 and self.board[row][col - 1].isComplete()):
+			self.board[row][col - 1].player = player
+
+		if (col + 1 < len(self.board[row]) and self.board[row][col + 1].isComplete()):
+			self.board[row][col + 1].player = player
+		if (row + 1 < len(self.board) and self.board[row + 1][col].isComplete()):
+			self.board[row + 1][col].player = player
+		
 		return True
 
 
@@ -135,10 +124,10 @@ class Box:
 
 	def move(self, n, player):
 		self.edges[n].marked = True
-		if (self.__isComplete()):
+		if (self.isComplete()):
 			self.player = player
 
-	def __isComplete(self):
+	def isComplete(self):
 		marked = True
 		for edge in self.edges:
 			marked = marked and edge.marked
@@ -153,9 +142,6 @@ class Box:
 
 		return string
 
-	# def toString(self):
-	# 	return "".join([i.toString() for i in self.edges])
-
 class Edge:
 	
 	def __init__(self, vertex1 = (), vertex2 = ()):
@@ -165,47 +151,3 @@ class Edge:
 
 	def listVertexes(self):
 		return [self.vertex1, self.vertex2]
-
-	def toString(self):
-		return str([str(self.vertex1), str(self.vertex2)])
-
-## Functions
-		
-def nextMove():
-	x, y = 0, 0
-	return (x, y)
-
-
-## Input
-
-if __name__ == "__main__":
-	args = sys.argv[1:]
-
-	if (len(args) != 2):
-		raise ValueError("Invalid Arguments")
-
-	b =  Board()
-
-	print "\n\n"
-
-	b.inputBoard(args[1])
-	
-	# print b.toString()
-	# print b.move(1, 1, "B")
-	# print b.move(2, 2, "B")
-	# print b.move(2, 3, "B")
-	# print b.move(1, 4, "W")
-	# print b.toString()
-
-	# # b.play()
-	# # print len(b.board)
-	# # print b.board[1][0].player
-
-	# # print b.board[0][0].toString()
-	# # print b.board[0][0].listVertexes()
-	# # print (1, 0) in b.board[0][0].listVertexes()
-
-	# # print b.board[0][0].edges[2].vertex1
-	# # print b.board[0][1].edges[1].vertex1
-	# # b.board[0][0].edges[2].vertex1 = "a"
-	# # print b.board[0][1].edges[1].vertex1
