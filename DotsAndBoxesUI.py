@@ -1,7 +1,7 @@
 from Tkinter import Tk, Canvas, Frame, BOTH
 import sys
 
-class Board(Frame):
+class BoardUI(Frame):
     def __init__(self, parent):
         Frame.__init__(self, parent)
 
@@ -21,6 +21,7 @@ class Board(Frame):
         canvas.pack(fill=BOTH, expand=1)
 
     def initUIWithTable(self, n, m, canvas,table):
+
         for i in range(n):
             for j in range(m):
                 
@@ -38,6 +39,8 @@ class Board(Frame):
                         if (isHorizontal):
                             canvas.create_line(25 + j * 45, 15 + i * 45, 50 + j * 45, 15 + i * 45, width=3, fill="red")
                         else:
+                            j -= 1
+                            print i, j
                             canvas.create_line(15 + j * 45, 25 + i * 45, 15 + j * 45, 50 + i * 45, width=3, fill="red")
 
                     j+=1
@@ -70,8 +73,8 @@ class Board(Frame):
 
 def main(n, m, table = []):
     root = Tk()
-
-    ex = Board(root)
+    print table
+    ex = BoardUI(root)
     ex.initUI(n, m, table)
     x, y = m * 45 - 10, n * 45 - 10
 

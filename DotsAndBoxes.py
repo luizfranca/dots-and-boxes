@@ -46,12 +46,12 @@ class Board:
 		self.board = self.__createBoard(n, m)
 		for i in range(len(self.board)):
 			for j in range(len(self.board[i])):
-				self.board[i][j].edges[0].marked = boardString[i * 2][j] == "X" 			   # UP
-				self.board[i][j].edges[1].marked = boardString[i * 2 + 1][j * 2] == "X"        # LEFT
-				self.board[i][j].edges[2].marked = boardString[i * 2 + 1][(j + 1) * 2] == "X"  # RIGHT
-				self.board[i][j].edges[3].marked = boardString[(i + 1) * 2][j] == "X"  		   # DOWN
+				self.board[i][j].edges[0].marked = boardString[i * 2][j] == "X"               # UP
+				self.board[i][j].edges[1].marked = boardString[i * 2 + 1][j * 2] == "X"       # LEFT
+				self.board[i][j].edges[2].marked = boardString[i * 2 + 1][(j + 1) * 2] == "X" # RIGHT
+				self.board[i][j].edges[3].marked = boardString[(i + 1) * 2][j] == "X"         # DOWN
 
-				self.board[i][j].player = boardString[i * 2 + 1][j * 2 + 1].replace("*","")    # Marked
+				self.board[i][j].player = boardString[i * 2 + 1][j * 2 + 1].replace("*","")   # Marked
 
 	def toString(self):
 		boardString = ""
@@ -77,21 +77,20 @@ class Board:
 
 		if (x == 0):
 			row = 0
+			col = y / 2
 			pos = 0
+		elif (y == 0):
+			row = x / 2
+			col = 0
+			pos = 1
 		elif (x % 2 == 0):
+			row = x / 2 - 1
 			col = y / 2
 			pos = 3
 		else:
-			col = y / 2 - 1
-
-		if (y == 0):
-			col = 0
-			pos = 1
-		elif (y % 2 == 0):
 			row = x / 2
+			col = y / 2 - 1
 			pos = 2
-		else:
-			row = x / 2 - 1
 
 		self.board[row][col].move(pos , player)
 

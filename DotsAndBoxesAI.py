@@ -12,5 +12,6 @@ if __name__ == "__main__":
 	print "\n\n"
 
 	b.inputBoard(args[1])
-	b.move(1, 2, "B")
+	b.move(1, 0, "B")
 	print b.toString()
+	
