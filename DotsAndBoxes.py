@@ -68,7 +68,7 @@ class Board:
 			boardString += row1 + "|" + row2 + "|"
 			
 		boardString += row3
-		boardString = boardString.replace("..", ".").replace("xx", "x")
+		boardString = boardString.replace("..", ".").replace("xx", "x").replace("__", "_")
 		return boardString
 
 	def move(self, x, y, player):
