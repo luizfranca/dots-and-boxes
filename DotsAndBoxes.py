@@ -1,7 +1,11 @@
 class Board:
 
 	def __init__(self, n = 0, m = 0):
-		self.board = board = [[Box() for j in xrange(m - 1)] for i in xrange(n - 1)]
+		self.board = []
+		for i in xrange(n - 1):
+			self.board += [[]]
+			for j in xrange(m - 1):
+				self.board[i].append(Box())
 
 	def inputBoard(self, boardString):
 		m = boardString.split("|")[0].count(".")
@@ -73,7 +77,7 @@ class Board:
 class Box:
 	
 	def __init__(self):
-		self.edges = [False for i in xrange(4)] # UP LEFT RIGHT DOWN
+		self.edges = [False, False, False, False] # UP LEFT RIGHT DOWN
 		self.player = ""
 
 	def move(self, n, player):
