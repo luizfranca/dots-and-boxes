@@ -73,6 +73,30 @@ class Board:
 		
 		return True
 
+	def convertMoveFormat(self, move): # From my representation to Pablo's
+		x, y = 0, 0
+
+		if move[2] == 0 or move[2] == 3:
+			x = (move[0] + 1 * (move[2] == 3)) * 2
+			y = (move[1] * 2) + 1
+		else:
+			x = (move[0] * 2) + 1
+			y = (move[1] + 1 * (move[2] == 2)) * 2
+
+		return (x, y)
+
+	def listMoves(self):
+		moves = []
+		for i in range(len(self.board)):
+
+			for j in range(len(self.board[i])):
+				movesBox = map(lambda x : self.convertMoveFormat((i, j, x)), self.board[i][j].listMoves())
+				for k in movesBox:
+					if k not in moves:
+						moves += [k]
+				
+		return moves
+
 
 class Box:
 	
@@ -87,6 +111,13 @@ class Box:
 
 	def isComplete(self):
 		return sum(self.edges) == 4
+
+	def listMoves(self):
+		moves = []
+		for i in range(4):
+			if not self.edges[i]:
+				moves.append(i)
+		return moves
 
 	def toString(self):
 		string = "." + ("x" if self.edges[0] else "_") + ".|" + \
