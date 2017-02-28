@@ -111,6 +111,13 @@ class Board:
 
 		return p1 - p2
 
+	def isFinished(self):
+		for row in self.board:
+			for item in row:
+				if item.player == "":
+					return False
+		return True
+
 class Box:
 	
 	def __init__(self):
