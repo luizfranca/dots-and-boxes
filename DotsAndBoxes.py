@@ -1,6 +1,7 @@
 class Board:
 
-	def __init__(self, n = 0, m = 0):
+	def __init__(self, player = "B", n = 0, m = 0):
+		self.player = player
 		self.board = []
 		for i in xrange(n - 1):
 			self.board += [[]]
@@ -97,6 +98,18 @@ class Board:
 				
 		return moves
 
+	def calculateScore(self):
+		p1, p2 = 0, 0
+		for row in self.board:
+			for item in row:
+				if item.player == "":
+					continue
+				elif item.player == self.player:
+					p1 += 1
+				else:
+					p2 += 1
+
+		return p1 - p2
 
 class Box:
 	
