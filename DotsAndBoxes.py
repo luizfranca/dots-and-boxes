@@ -53,18 +53,19 @@ class Board:
 			col = y / 2 - 1
 			pos = 2
 
-		completed = self.board[row][col].move(pos , player)
+		completed = self.board[row][col].move(pos, player)
+		comp = False
 
 		if (row - 1 >= 0 and pos == 0):
-			completed = completed or self.board[row - 1][col].move(3, player)
+			comp = self.board[row - 1][col].move(3, player)
 		elif (col - 1 >= 0 and pos == 1):
-			completed = completed or self.board[row][col - 1].move(2, player)
+			comp = self.board[row][col - 1].move(2, player)
 		elif (col + 1 < len(self.board[row]) and pos == 2):
-			completed = completed or self.board[row][col + 1].move (1, player)
+			comp = self.board[row][col + 1].move (1, player)
 		elif (row + 1 < len(self.board) and pos == 3):
-			completed = completed or self.board[row + 1][col].move(0, player)
+			comp = self.board[row + 1][col].move(0, player)
 		
-		return completed
+		return completed or comp
 
 	def _convert_move_format(self, move): # From my representation to Pablo's
 		x, y = 0, 0
