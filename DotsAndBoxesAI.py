@@ -8,6 +8,8 @@ def calculate_score(board, player):
 		for item in row:
 			if item.player == player:
 				counter += 1
+			if item.player == (not player):
+				counter -= 1
 	return counter
 
 def alphabeta(node, depth = 10, alpha = Decimal("-Infinity"), beta = Decimal("Infinity"), is_max = True, player = True, move = (0,0)):
