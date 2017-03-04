@@ -98,11 +98,22 @@ class Board:
 					return False
 		return True
 
+	def copy(self):
+		board_matrix = []
+		for i in range(len(self.board)):
+			board_matrix += [[]]
+			for j in range(len(self.board[i])):
+				edges = [x for x in self.board[i][j].edges]
+				board_matrix[i].append(Box(edges, self.board[i][j].player))
+		board = Board()
+		board.board = board_matrix
+		return board
+
 class Box:
 	
-	def __init__(self):
-		self.edges = [False, False, False, False] # UP LEFT RIGHT DOWN
-		self.player = None  # True represents your box and False the other box
+	def __init__(self, edges = [False, False, False, False], player = None):
+		self.edges = edges # UP LEFT RIGHT DOWN
+		self.player = player  # True represents your box and False the other box
 
 	def move(self, n, player):
 		self.edges[n] = True
