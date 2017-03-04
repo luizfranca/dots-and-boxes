@@ -1,53 +1,45 @@
 class Board:
 
-	def __init__(self, player = "B", n = 0, m = 0):
-		self.player = player
-		self.board = []
-		for i in xrange(n - 1):
-			self.board += [[]]
-			for j in xrange(m - 1):
-				self.board[i].append(Box())
+	def __init__(self, n = 0, m = 0):
+		self.board = [[Box() for j in xrange(m - 1)] for i in xrange(n - 1)]
 
-	def inputBoard(self, boardString):
-		m = boardString.split("|")[0].count(".")
-		n = boardString.count(".") / m
+	def input_board(self, board_string):
+		m = board_string.split("|")[0].count(".")
+		n = board_string.count(".") / m
 
-		self.board = board = [[Box() for j in xrange(m - 1)] for i in xrange(n - 1)]
+		self.board = [[Box() for j in xrange(m - 1)] for i in xrange(n - 1)]
 
-		boardList = boardString.upper().split("|")
+		board_list = board_string.upper().split("|")
 
-		for i in range(len(boardList)):
-			for j in range(len(boardList[i])):
-				if boardList[i][j] == "X":
-					self.move(i, j, "")
+		for i in range(len(board_list)):
+			for j in range(len(board_list[i])):
+				if board_list[i][j] == "X":
+					self.move(i, j, None)
 
-		for i in range(len(boardList)):
-			for j in range(len(boardList[i])):
-				if boardList[i][j] == "B" or boardList[i][j] == "W":
-					self.board[i / 2][j / 2].player = boardList[i][j]
+		for i in range(len(board_list)):
+			for j in range(len(board_list[i])):
+				if board_list[i][j] == "B" or board_list[i][j] == "W":
+					self.board[i / 2][j / 2].player = True if board_list[i][j] == "W" else False
 
-	def toString(self):
-		boardString = ""
+	def to_string(self):
+		board_string = ""
 
 		for row in self.board:
 			row1, row2, row3 = "", "", ""
 
 			for box in row:
-				boxString = box.toString().split("|")
-				row1 += boxString[0]
-				row2 += boxString[1]
-				row3 += boxString[2]
+				box_string = box.to_string().split("|")
+				row1 += box_string[0]
+				row2 += box_string[1]
+				row3 += box_string[2]
 
-			boardString += row1 + "|" + row2 + "|"
+			board_string += row1 + "|" + row2 + "|"
 			
-		boardString += row3
-		boardString = boardString.replace("..", ".").replace("xx", "x").replace("__", "_")
-		return boardString
+		board_string += row3
+		board_string = board_string.replace("..", ".").replace("xx", "x").replace("__", "_")
+		return board_string
 
 	def move(self, x, y, player):
-		if (x % 2 == y % 2):
-			return False
-
 		if (x == 0 or y == 0):
 			row = x / 2
 			col = y / 2
@@ -61,20 +53,20 @@ class Board:
 			col = y / 2 - 1
 			pos = 2
 
-		self.board[row][col].move(pos , player)
+		completed = self.board[row][col].move(pos , player)
 
 		if (row - 1 >= 0 and pos == 0):
-			self.board[row - 1][col].move(3, player)
+			completed = completed or self.board[row - 1][col].move(3, player)
 		elif (col - 1 >= 0 and pos == 1):
-			self.board[row][col - 1].move(2, player)
+			completed = completed or self.board[row][col - 1].move(2, player)
 		elif (col + 1 < len(self.board[row]) and pos == 2):
-			self.board[row][col + 1].move (1, player)
+			completed = completed or self.board[row][col + 1].move (1, player)
 		elif (row + 1 < len(self.board) and pos == 3):
-			self.board[row + 1][col].move(0, player)
+			completed = completed or self.board[row + 1][col].move(0, player)
 		
-		return True
+		return completed
 
-	def convertMoveFormat(self, move): # From my representation to Pablo's
+	def _convert_move_format(self, move): # From my representation to Pablo's
 		x, y = 0, 0
 
 		if move[2] == 0 or move[2] == 3:
@@ -86,35 +78,22 @@ class Board:
 
 		return (x, y)
 
-	def listMoves(self):
+	def list_moves(self):
 		moves = []
 		for i in range(len(self.board)):
 
 			for j in range(len(self.board[i])):
-				movesBox = map(lambda x : self.convertMoveFormat((i, j, x)), self.board[i][j].listMoves())
-				for k in movesBox:
+				moves_box = map(lambda x : self._convert_move_format((i, j, x)), self.board[i][j].list_moves())
+				for k in moves_box:
 					if k not in moves:
 						moves += [k]
 				
 		return moves
 
-	def calculateScore(self):
-		p1, p2 = 0, 0
+	def is_finished(self):
 		for row in self.board:
 			for item in row:
-				if item.player == "":
-					continue
-				elif item.player == self.player:
-					p1 += 1
-				else:
-					p2 += 1
-
-		return p1 - p2
-
-	def isFinished(self):
-		for row in self.board:
-			for item in row:
-				if item.player == "":
+				if item.player == None:
 					return False
 		return True
 
@@ -122,27 +101,28 @@ class Box:
 	
 	def __init__(self):
 		self.edges = [False, False, False, False] # UP LEFT RIGHT DOWN
-		self.player = ""
+		self.player = None  # True represents your box and False the other box
 
 	def move(self, n, player):
 		self.edges[n] = True
-		if (self.isComplete()):
+		if (self.is_complete()):
 			self.player = player
+		return self.is_complete()
 
-	def isComplete(self):
+	def is_complete(self):
 		return sum(self.edges) == 4
 
-	def listMoves(self):
+	def list_moves(self):
 		moves = []
 		for i in range(4):
 			if not self.edges[i]:
 				moves.append(i)
 		return moves
 
-	def toString(self):
+	def to_string(self): # parameter player represents the main player
 		string = "." + ("x" if self.edges[0] else "_") + ".|" + \
 		("x" if self.edges[1] else "_") + \
-		("*" if self.player == "" else self.player) + \
+		("*" if self.player == None else ("W" if self.player else "B")) + \
 		("x" if self.edges[2] else "_") + "|." + \
 		("x" if self.edges[3] else "_") + "."
 

@@ -1,44 +1,50 @@
-import sys, copy, time
+import copy
 from decimal import Decimal
 from DotsAndBoxes import *
 
-i = 1
+def calculate_score(board, player):
+	counter = 0
+	for row in board.board:
+		for item in row:
+			if item.player == player:
+				counter += 1
+	return counter
 
-def alphabeta(node, alpha = Decimal("-Infinity"), beta = Decimal("Infinity"), isMax = True, player1 = "B" , player2 = "W", move = (0,0)):
-	children = node.listMoves()
+def alphabeta(node, alpha = Decimal("-Infinity"), beta = Decimal("Infinity"), is_max = True, player = True, move = (0,0)):
+	children = node.list_moves()
 
 	if len(children) == 0:
-		return [move, node.calculateScore()]
+		return [move, calculate_score(node, player)]
 
-	if isMax:
-		bestMove =  ()
-		bestScore = Decimal("-Infinity")
+	if is_max:
+		best_move =  ()
+		best_score = Decimal("-Infinity")
 		for x, y in children:
 			current = copy.deepcopy(node)
-			current.move(x, y, player1)
-			temp = alphabeta(current, alpha, beta, False, player1, player2, (x, y))
-			if temp[1] > bestScore:
-				bestMove = temp[0]
-				bestScore = temp[1]
+			turn = current.move(x, y, player)
+			temp = alphabeta(current, alpha, beta, turn, player, (x, y))
+			if temp[1] > best_score:
+				best_move = (x, y)
+				best_score = temp[1]
 
-			alpha = max(bestScore, alpha)
+			alpha = max(best_score, alpha)
 			if beta <= alpha:
 				break
 
-		return [bestMove, bestScore]
+		return [best_move, best_score]
 	else:
-		worseMove = ()
-		worseScore = Decimal("Infinity")
+		worse_move = ()
+		worse_score = Decimal("Infinity")
 		for x, y in children:
 			current = copy.deepcopy(node)
-			current.move(x, y, player1)
-			temp = alphabeta(current, alpha, beta, True, player1, player2, (x, y))
-			if temp[1] < worseScore:
-				worseMove = temp[0]
-				worseScore = temp[1]
+			turn = current.move(x, y, not player)
+			temp = alphabeta(current, alpha, beta, not turn, player, (x, y))
+			if temp[1] < worse_score:
+				worse_move = (x, y)
+				worse_score = temp[1]
 
-			beta = min(beta, worseScore)
+			beta = min(beta, worse_score)
 			if beta <= alpha:
 				break
 
-		return [worseMove, worseScore]
+		return [worse_move, worse_score]

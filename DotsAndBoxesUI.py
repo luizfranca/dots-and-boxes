@@ -71,13 +71,13 @@ class BoardUI(Frame):
 
 def main(n, m, table = []):
     root = Tk()
-    
+
     ex = BoardUI(root)
     ex.initUI(n, m, table)
     x, y = m * 45 - 10, n * 45 - 10
 
     root.geometry(str(x) + "x" + str(y) + "+0+0")
-    root.mainloop()  
+    root.mainloop()
 
 if __name__ == "__main__":
     args = sys.argv[1:]
