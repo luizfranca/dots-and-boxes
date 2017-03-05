@@ -10,7 +10,6 @@ class Board:
 		self.board = [[Box() for j in xrange(m - 1)] for i in xrange(n - 1)]
 
 		board_list = board_string.upper().split("|")
-
 		for i in range(len(board_list)):
 			for j in range(len(board_list[i])):
 				if board_list[i][j] == "X":
@@ -34,10 +33,9 @@ class Board:
 				row3 += box_string[2]
 
 			board_string += row1 + "|" + row2 + "|"
-			
+
 		board_string += row3
-		board_string = board_string.replace("..", ".").replace("xx", "x").replace("__", "_")
-		return board_string
+		return board_string.replace("..", ".").replace("xx", "x").replace("__", "_")
 
 	def move(self, x, y, player):
 		if (x == 0 or y == 0):
@@ -69,7 +67,6 @@ class Board:
 
 	def _convert_move_format(self, move): # From my representation to Pablo's
 		x, y = 0, 0
-
 		if move[2] == 0 or move[2] == 3:
 			x = (move[0] + 1 * (move[2] == 3)) * 2
 			y = (move[1] * 2) + 1
@@ -82,14 +79,9 @@ class Board:
 	def list_moves(self):
 		moves = []
 		for i in range(len(self.board)):
-
 			for j in range(len(self.board[i])):
-				moves_box = map(lambda x : self._convert_move_format((i, j, x)), self.board[i][j].list_moves())
-				for k in moves_box:
-					if k not in moves:
-						moves += [k]
-				
-		return moves
+				moves += map(lambda x : self._convert_move_format((i, j, x)), self.board[i][j].list_moves())
+		return list(set(moves))
 
 	def is_finished(self):
 		for row in self.board:
@@ -100,25 +92,23 @@ class Board:
 
 	def copy(self):
 		board_matrix = []
-		for i in range(len(self.board)):
+		for row in self.board:
 			board_matrix += [[]]
-			for j in range(len(self.board[i])):
-				edges = [x for x in self.board[i][j].edges]
-				board_matrix[i].append(Box(edges, self.board[i][j].player))
+			for item in row:
+				board_matrix[-1].append(Box(item.edges[:], item.player))
 		board = Board()
 		board.board = board_matrix
 		return board
 
 class Box:
 	
-	def __init__(self, edges = [False, False, False, False], player = None):
-		self.edges = edges # UP LEFT RIGHT DOWN
+	def __init__(self, edges = None, player = None):
+		self.edges = [False, False, False, False] if edges == None else edges # UP LEFT RIGHT DOWN
 		self.player = player  # True represents your box and False the other box
 
 	def move(self, n, player):
 		self.edges[n] = True
-		if (self.is_complete()):
-			self.player = player
+		self.player = player if self.is_complete() else None
 		return self.is_complete()
 
 	def is_complete(self):
@@ -137,5 +127,4 @@ class Box:
 		("*" if self.player == None else ("W" if self.player else "B")) + \
 		("x" if self.edges[2] else "_") + "|." + \
 		("x" if self.edges[3] else "_") + "."
-
 		return string

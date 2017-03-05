@@ -14,7 +14,7 @@ def calculate_score(board, player):
 
 def alphabeta(node, depth = 10, alpha = Decimal("-Infinity"), beta = Decimal("Infinity"), is_max = True, player = True, move = (0,0)):
 	children = node.list_moves()
-
+	
 	if len(children) == 0 or depth == 0:
 		return [move, calculate_score(node, player)]
 
@@ -22,7 +22,7 @@ def alphabeta(node, depth = 10, alpha = Decimal("-Infinity"), beta = Decimal("In
 		best_move =  ()
 		best_score = Decimal("-Infinity")
 		for x, y in children:
-			current = copy.deepcopy(node)
+			current = node.copy()
 			turn = current.move(x, y, player)
 			temp = alphabeta(current, depth - 1, alpha, beta, turn, player, (x, y))
 			if temp[1] > best_score:
@@ -38,7 +38,7 @@ def alphabeta(node, depth = 10, alpha = Decimal("-Infinity"), beta = Decimal("In
 		worse_move = ()
 		worse_score = Decimal("Infinity")
 		for x, y in children:
-			current = copy.deepcopy(node)
+			current = node.copy()
 			turn = current.move(x, y, not player)
 			temp = alphabeta(current, depth - 1, alpha, beta, not turn, player, (x, y))
 			if temp[1] < worse_score:
