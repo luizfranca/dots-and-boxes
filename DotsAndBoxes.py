@@ -2,18 +2,18 @@ class Board:
 
     def __init__(self, n = 0, m = 0):
         self.board = [None] * ((2 * n - 1) * (2 * m - 1))
-        self.dimentions = (n, m)
+        self.dimensions = (n, m)
 
     def _get_position(self, x, y):
-        return self.board[x * (self.dimentions[0] * 2 - 1) + y]
+        return self.board[x * (self.dimensions[0] * 2 - 1) + y]
 
     def _set_position(self, x, y, value):
-        self.board[x * (self.dimentions[0] * 2 - 1) + y] = value
+        self.board[x * (self.dimensions[0] * 2 - 1) + y] = value
 
     def input_board(self, board_string):
         m = board_string.split("|")[0].count(".")
         n = board_string.count(".") / m
-        self.dimentions = (n, m)
+        self.dimensions = (n, m)
         self.board = [None] * ((2 * n - 1) * (2 * m - 1))
         board_string = board_string.replace("|", "")
         for i in range(len(board_string)):
@@ -34,7 +34,7 @@ class Board:
                 board_string += "x" if cel else "_"
 
             j += 1
-            if (j == self.dimentions[1] * 2 - 1):
+            if (j == self.dimensions[1] * 2 - 1):
                 j = 0
                 i += 1
                 board_string += "|"
@@ -47,14 +47,14 @@ class Board:
             if y - 2 >= 0 and self._get_position(x, y) and self._get_position(x, y - 2) and self._get_position(x - 1, y - 1) and self._get_position(x + 1, y - 1):
                 completed = True
                 self._set_position(x, y - 1, player)
-            if (y + 2 < self.dimentions[1] * 2 - 1) and self._get_position(x, y) and self._get_position(x, y + 2) and self._get_position(x - 1, y + 1) and self._get_position(x + 1, y + 1):
+            if (y + 2 < self.dimensions[1] * 2 - 1) and self._get_position(x, y) and self._get_position(x, y + 2) and self._get_position(x - 1, y + 1) and self._get_position(x + 1, y + 1):
                 completed = True
                 self._set_position(x, y + 1, player)
         else:
             if x - 2 >= 0 and self._get_position(x, y) and self._get_position(x - 2, y) and self._get_position(x - 1, y - 1) and self._get_position(x - 1, y + 1):
                 completed = True
                 self._set_position(x - 1, y, player)
-            if (x + 2 < self.dimentions[0] * 2 - 1) and self._get_position(x, y) and self._get_position(x + 2, y) and self._get_position(x + 1, y - 1) and self._get_position(x + 1, y + 1):
+            if (x + 2 < self.dimensions[0] * 2 - 1) and self._get_position(x, y) and self._get_position(x + 2, y) and self._get_position(x + 1, y - 1) and self._get_position(x + 1, y + 1):
                 completed = True
                 self._set_position(x + 1, y, player)
         return completed
@@ -69,21 +69,21 @@ class Board:
             if i % 2 != j % 2 and not cel:
                 moves.append((i, j))
             j += 1
-            if (j == self.dimentions[1] * 2 - 1):
+            if (j == self.dimensions[1] * 2 - 1):
                 j = 0
                 i += 1
         return moves
 
     def is_finished(self):
-        i = self.dimentions[1] * 2
-        while i < ((2 * self.dimentions[0] - 1) * (2 * self.dimentions[1] - 1)):
+        i = self.dimensions[1] * 2
+        while i < ((2 * self.dimensions[0] - 1) * (2 * self.dimensions[1] - 1)):
             if self.board[i] == None:
                 return False
-            i += 2 + self.dimentions[1] * 2 if i % (self.dimentions[1] * 2 - 1) == (self.dimentions[1] * 2 - 1) - 2 else 2
+            i += 2 + self.dimensions[1] * 2 if i % (self.dimensions[1] * 2 - 1) == (self.dimensions[1] * 2 - 1) - 2 else 2
         return True
 
     def copy(self):
         board = Board()
-        board.dimentions = self.dimentions
+        board.dimensions = self.dimensions
         board.board = self.board[:]
         return board
