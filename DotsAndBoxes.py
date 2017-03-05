@@ -66,7 +66,7 @@ class Board:
     def list_moves(self):
         moves, i, j = [], 0, 0
         for cel in self.board:
-            if i % 2 != j % 2:
+            if i % 2 != j % 2 and not cel:
                 moves.append((i, j))
             j += 1
             if (j == self.dimentions[1] * 2 - 1):
