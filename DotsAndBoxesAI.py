@@ -3,12 +3,13 @@ from DotsAndBoxes import *
 
 def calculate_score(board, player):
     counter = 0
-    for row in board.board:
-        for item in row:
-            if item.player == player:
-                counter += 1
-            if item.player == (not player):
-                counter -= 1
+    i = board.dimentions[1] * 2
+    while i < ((2 * board.dimentions[0] - 1) * (2 * board.dimentions[1] - 1)):
+        if board.board[i] == player:
+            counter += 1
+        elif board.board[i] == (not player):
+            counter -= 1
+        i += 2 + board.dimentions[1] * 2 if i % (board.dimentions[1] * 2 - 1) == (board.dimentions[1] * 2 - 1) - 2 else 2
     return counter
 
 def alphabeta(node, depth = 10, alpha = Decimal("-Infinity"), beta = Decimal("Infinity"), is_max = True, player = True, move = (0,0)):
