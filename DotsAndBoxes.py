@@ -3,6 +3,7 @@ class DotsAndBoxes:
     def __init__(self, n = 0, m = 0):
         self.board = [None] * ((2 * n - 1) * (2 * m - 1))
         self.dimensions = (n * 2 - 1, m * 2 - 1)
+        self.available_moves = self._list_moves()
 
     def _get_position(self, x, y):
         return self.board[x * self.dimensions[0] + y]
@@ -21,6 +22,7 @@ class DotsAndBoxes:
                 continue
             elif board_string[i].upper() == "B" or board_string[i].upper()== "W" or board_string[i].upper() == "X":
                 self.board[i] = False if board_string[i].upper() == "B" else True
+        self.available_moves = self._list_moves()
 
     def to_string(self):
         board_string = ""
@@ -58,9 +60,10 @@ class DotsAndBoxes:
 
     def move(self, x, y, player):
         self._set_position(x, y, True)
+        self.available_moves.remove((x, y))
         return self._close_box(x, y, player)
 
-    def list_moves(self):
+    def _list_moves(self):
         moves, i = [], 1
         for cel in self.board[1::2]:
             if not cel:
@@ -80,4 +83,5 @@ class DotsAndBoxes:
         dab = DotsAndBoxes()
         dab.dimensions = self.dimensions
         dab.board = self.board[:]
+        dab.available_moves = self.available_moves[:]
         return dab

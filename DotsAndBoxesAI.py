@@ -12,7 +12,7 @@ def calculate_score(board, player):
     return counter
 
 def alphabeta(node, depth = 10, alpha = -inf, beta = inf, is_max = True, player = True, move = (0,0)):
-    children = node.list_moves()
+    children = node.available_moves
 
     if len(children) == 0 or depth == 0:
         return [move, calculate_score(node, player)]
