@@ -64,14 +64,10 @@ class DotsAndBoxes:
         return self._close_box(x, y, player)
 
     def list_moves(self):
-        moves, i, j = [], 0, 0
-        for cel in self.board:
-            if i % 2 != j % 2 and not cel:
-                moves.append((i, j))
-            j += 1
-            if (j == self.dimensions[1] * 2 - 1):
-                j = 0
-                i += 1
+        moves = []
+        for i in range(1, len(self.board), 2):
+            if not self.board[i]:
+                moves.append((i / (self.dimensions[0] * 2 - 1), i % (self.dimensions[1] * 2 - 1)))
         return moves
 
     def is_finished(self):
