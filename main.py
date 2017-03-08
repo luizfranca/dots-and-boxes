@@ -8,4 +8,4 @@ board = sys.argv[2]
 game = dab.DotsAndBoxes()
 game.input_board(board)
 
-print ai.alphabeta(game, 7, player = player)[0]
+print ai.alphabeta(game, 9, player = player)[0]
