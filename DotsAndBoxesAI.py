@@ -1,5 +1,4 @@
 from decimal import Decimal
-from DotsAndBoxes import *
 
 def calculate_score(board, player):
     counter = 0

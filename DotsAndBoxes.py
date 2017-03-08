@@ -1,4 +1,4 @@
-class Board:
+class DotsAndBoxes:
 
     def __init__(self, n = 0, m = 0):
         self.board = [None] * ((2 * n - 1) * (2 * m - 1))
@@ -83,7 +83,7 @@ class Board:
         return True
 
     def copy(self):
-        board = Board()
-        board.dimensions = self.dimensions
-        board.board = self.board[:]
-        return board
+        dab = DotsAndBoxes()
+        dab.dimensions = self.dimensions
+        dab.board = self.board[:]
+        return dab
