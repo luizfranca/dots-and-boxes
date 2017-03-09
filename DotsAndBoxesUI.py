@@ -43,8 +43,8 @@ class BoardUI(Frame):
 
                     j+=1
                 elif (item == "B" or item == "W"):
-                    color = "black" if item == "B" else "green"
-                    canvas.create_rectangle(20 + (j - 1) * 45, 20 + i * 45, 55 + (j - 1) * 45, 55 + i * 45, fill=color)
+                    color = "black" if item == "B" else "white"
+                    canvas.create_rectangle(20 + (j - 1) * 45, 20 + i * 45, 55 + (j - 1) * 45, 55 + i * 45, fill=color, width = 2)
 
             isHorizontal = not isHorizontal
             if ("B" in line or "W" in line or "*" in line):
@@ -53,21 +53,7 @@ class BoardUI(Frame):
     def initUIFilled(self, n, m, canvas):
         for i in range(n):
             for j in range(m):
-        		
-                # create dots
                 canvas.create_oval(10 + j * 45, 10 + i * 45, 20 + j * 45, 20 + i * 45, fill='blue')
-
-        		# Create horizontal lines
-                if (j < m - 1):
-                    canvas.create_line(25 + j * 45, 15 + i * 45, 50 + j * 45, 15 + i * 45, width=3, fill="red")
-
-        		# Create Vertical Lines
-                if (i < n - 1):
-                    canvas.create_line(15 + j * 45, 25 + i * 45, 15 + j * 45, 50 + i * 45, width=3, fill="red")
-
-                # Create Box
-                if (i < n - 1 and j < m - 1):
-                    canvas.create_rectangle(20 + j * 45, 20 + i * 45, 55 + j * 45, 55 + i * 45, fill="black")
 
 def main(n, m, table = []):
     root = Tk()

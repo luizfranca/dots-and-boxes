@@ -58,7 +58,7 @@ class DotsAndBoxes:
                 self.board[(x + 1) * self.dimensions[1] + y] = player
         return completed
 
-    def move(self, x, y, player = True):
+    def move(self, x, y, player):
         self.board[x * self.dimensions[1] + y] = True
         self.available_moves.remove((x, y))
         return self._close_box(x, y, player)
