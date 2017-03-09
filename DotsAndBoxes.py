@@ -22,10 +22,9 @@ class DotsAndBoxes:
         self.available_moves = self._list_moves()
 
     def to_string(self):
-        board_string = ""
-        i = 0
+        board_string, i = "", 0
         for cel in self.board:
-            x, y = i / self.dimensions[0], i % self.dimensions[1]
+            x, y = i / self.dimensions[1], i % self.dimensions[1]
             if x % 2 == y % 2 == 0:
                 board_string += "."
             elif x % 2 == y % 2 != 0:
@@ -40,27 +39,27 @@ class DotsAndBoxes:
     def _close_box(self, x, y, player):
         completed = False
         if x % 2 == 1: # horizontal
-            if y - 2 >= 0 and self.board[x * self.dimensions[0] + y] and self.board[x * self.dimensions[0] + y - 2] and self.board[(x - 1) * self.dimensions[0] + y - 1] and self.board[(x + 1) * self.dimensions[0] + y - 1]:
+            if y - 2 >= 0 and self.board[x * self.dimensions[1] + y] and self.board[x * self.dimensions[1] + y - 2] and self.board[(x - 1) * self.dimensions[1] + y - 1] and self.board[(x + 1) * self.dimensions[1] + y - 1]:
                 completed = True
                 self.boxes[player] += 1
-                self.board[x * self.dimensions[0] + y - 1] = player
-            if (y + 2 < self.dimensions[1]) and self.board[x * self.dimensions[0] + y] and self.board[x * self.dimensions[0] + y + 2] and self.board[(x - 1) * self.dimensions[0] + y + 1]  and self.board[(x + 1) * self.dimensions[0] + y + 1]:
+                self.board[x * self.dimensions[1] + y - 1] = player
+            if (y + 2 < self.dimensions[1]) and self.board[x * self.dimensions[1] + y] and self.board[x * self.dimensions[1] + y + 2] and self.board[(x - 1) * self.dimensions[1] + y + 1]  and self.board[(x + 1) * self.dimensions[1] + y + 1]:
                 completed = True
                 self.boxes[player] += 1
-                self.board[x * self.dimensions[0] + y + 1] = player
+                self.board[x * self.dimensions[1] + y + 1] = player
         else:
-            if x - 2 >= 0 and self.board[x * self.dimensions[0] + y] and self.board[(x - 2) * self.dimensions[0] + y] and self.board[(x - 1) * self.dimensions[0] + y - 1] and self.board[(x - 1) * self.dimensions[0] + y + 1]:
+            if x - 2 >= 0 and self.board[x * self.dimensions[1] + y] and self.board[(x - 2) * self.dimensions[1] + y] and self.board[(x - 1) * self.dimensions[1] + y - 1] and self.board[(x - 1) * self.dimensions[1] + y + 1]:
                 completed = True
                 self.boxes[player] += 1
-                self.board[(x - 1) * self.dimensions[0] + y] = player
-            if (x + 2 < self.dimensions[0]) and self.board[x * self.dimensions[0] + y] and self.board[(x + 2) * self.dimensions[0] + y] and self.board[(x + 1) * self.dimensions[0] + y - 1] and self.board[(x + 1) * self.dimensions[0] + y + 1]:
+                self.board[(x - 1) * self.dimensions[1] + y] = player
+            if (x + 2 < self.dimensions[0]) and self.board[x * self.dimensions[1] + y] and self.board[(x + 2) * self.dimensions[1] + y] and self.board[(x + 1) * self.dimensions[1] + y - 1] and self.board[(x + 1) * self.dimensions[1] + y + 1]:
                 completed = True
                 self.boxes[player] += 1
-                self.board[(x + 1) * self.dimensions[0] + y] = player
+                self.board[(x + 1) * self.dimensions[1] + y] = player
         return completed
 
-    def move(self, x, y, player):
-        self._set_position(x, y, True)
+    def move(self, x, y, player = True):
+        self.board[x * self.dimensions[1] + y] = True
         self.available_moves.remove((x, y))
         return self._close_box(x, y, player)
 
@@ -68,7 +67,7 @@ class DotsAndBoxes:
         moves, i = [], 1
         for cel in self.board[1::2]:
             if not cel:
-                moves.append((i / self.dimensions[0], i % self.dimensions[1]))
+                moves.append((i / self.dimensions[1], i % self.dimensions[1]))
             i += 2
         return moves
 
