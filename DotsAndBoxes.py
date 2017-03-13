@@ -76,7 +76,7 @@ class DotsAndBoxes:
         while i < (self.dimensions[0] * self.dimensions[1]):
             if self.board[i] == None:
                 return False
-            i += self.dimensions[1] if i % self.dimensions[1] == self.dimensions[1] - 2 else 2
+            i += self.dimensions[1] + 3 if i % self.dimensions[1] == self.dimensions[1] - 2 else 2
         return True
 
     def copy(self):
